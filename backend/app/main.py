@@ -1,3 +1,4 @@
+from app.api.v1 import router as api_router
 from contextlib import asynccontextmanager
 
 import redis.asyncio as aioredis
@@ -47,6 +48,7 @@ if settings.ENVIRONMENT == "local":
         allow_headers=["*"],
     )
 
+app.include_router(api_router)
 
 # Health check — useful for Docker healthcheck and deployment platforms
 @app.get("/api/v1/health")

@@ -17,6 +17,7 @@ dependencies = [
     "apscheduler>=3.10.0",
     "python-multipart>=0.0.9",
     "uvicorn[standard]>=0.29.0",
+    "bcrypt>=5.0.0",
 ]
 
 [build-system]

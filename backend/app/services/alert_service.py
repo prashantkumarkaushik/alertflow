@@ -128,10 +128,20 @@ async def ingest_alert(
     # ── Step 1: Compute fingerprint ────────────────────────
     fingerprint = compute_fingerprint(payload.source, payload.name, payload.labels)
 
+    # # ── Step 2: Redis deduplication check ──────────────────
+    # is_dup = await redis_service.is_duplicate(fingerprint, team_id)
+    # if is_dup:
+    #     # Return early — don't save anything
+    #     return AlertIngestResponse(
+    #         alert=None,  # type: ignore
+    #         incident_id=None,
+    #         deduplicated=True,
+    #         suppressed=False,
+    #         message="Alert deduplicated — same fingerprint seen recently",
+    #     )
     # ── Step 2: Redis deduplication check ──────────────────
     is_dup = await redis_service.is_duplicate(fingerprint, team_id)
     if is_dup:
-        # Return early — don't save anything
         return AlertIngestResponse(
             alert=None,  # type: ignore
             incident_id=None,

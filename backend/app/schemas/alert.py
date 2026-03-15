@@ -2,20 +2,25 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+from pydantic import field_validator
 from app.models.enums import AlertStatus
 
 
 class AlertIngestRequest(BaseModel):
-    """
-    Payload sent by monitoring systems (Prometheus, Grafana, Datadog etc.)
-    """
-
-    source: str  # e.g. "prometheus", "grafana"
-    name: str  # e.g. "HighCPUUsage"
-    service_name: str  # e.g. "payments-api"
+    source: str
+    name: str
+    service_name: str
     message: str | None = None
-    priority: str = "P3"  # default to medium if not specified
-    labels: dict = {}  # e.g. {"env": "prod", "region": "us-east-1"}
+    priority: str = "P3"
+    labels: dict = {}
+
+    @field_validator("priority", mode="before")
+    @classmethod
+    def uppercase_priority(cls, v: str) -> str:
+        """Accept both p1 and P1."""
+        if isinstance(v, str):
+            return v.upper()
+        return v
 
 
 class AlertResponse(BaseModel):

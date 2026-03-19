@@ -1,0 +1,43 @@
+groups:
+  - name: alertflow_demo
+    rules:
+      # Fires when backend is unreachable for 30s
+      - alert: BackendDown
+        expr: up{job="alertflow-backend"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: alertflow-backend
+        annotations:
+          summary: "AlertFlow backend is down"
+          description: "Backend has been unreachable for 30 seconds"
+
+      # Fires when backend is slow to respond
+      - alert: HighResponseTime
+        expr: up{job="alertflow-backend"} == 1
+        for: 10s
+        labels:
+          severity: warning
+          service: alertflow-backend
+        annotations:
+          summary: "Demo alert — High response time on backend"
+          description: "This is a demo alert to show Prometheus integration"
+
+      - alert: HighCPUUsage
+        expr: up{job="alertflow-backend"} == 1
+        for: 10s
+        labels:
+          severity: critical
+          service: payments-api
+        annotations:
+          summary: "High CPU usage on payments-api"
+          description: "CPU has been above threshold for 10 seconds"
+
+      - alert: BackendDown
+        expr: up{job="alertflow-backend"} == 0
+        for: 10s
+        labels:
+          severity: critical
+          service: alertflow-backend
+        annotations:
+          summary: "AlertFlow backend is down"

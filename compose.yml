@@ -45,6 +45,35 @@ services:
       - POSTGRES_SERVER=db
       - REDIS_URL=redis://redis:6379/0
 
+  prometheus:
+    image: prom/prometheus:latest
+    restart: "no"
+    ports:
+      - "9090:9090"
+    networks:
+      - default
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:z
+      - ./monitoring/rules.yml:/etc/prometheus/rules.yml:z
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    restart: "no"
+    ports:
+      - "9093:9093"
+    networks:
+      - default
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:z
+      - ./monitoring/token.txt:/etc/alertmanager/token.txt:z
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+
 volumes:
   app-db-data:
   app-redis-data:
+  app-prometheus-data:    # ← add this

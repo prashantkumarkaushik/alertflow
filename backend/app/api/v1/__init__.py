@@ -7,6 +7,7 @@ from app.api.v1 import (
     incidents,
     maintenance,
     sla_policies,
+    webhooks,
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -16,3 +17,4 @@ router.include_router(incidents.router)
 router.include_router(sla_policies.router)
 router.include_router(maintenance.router)
 router.include_router(escalation_policies.router)
+router.include_router(webhooks.router)

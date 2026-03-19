@@ -1,3 +1,4 @@
+from prometheus_fastapi_instrumentator import Instrumentator
 from contextlib import asynccontextmanager
 
 import redis.asyncio as aioredis
@@ -63,6 +64,8 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     lifespan=lifespan,
 )
+
+Instrumentator().instrument(app).expose(app)
 
 # CORS
 if settings.ENVIRONMENT == "local":

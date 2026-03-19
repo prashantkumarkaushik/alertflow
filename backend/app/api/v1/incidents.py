@@ -94,3 +94,16 @@ async def get_incident_audit(
         incident_id=incident_id,
         team_id=current_user.team_id,
     )
+
+
+@router.patch("/{incident_id}/assign-escalation", response_model=IncidentDetailResponse)
+async def assign_escalation_policy(
+    incident_id: int,
+    escalation_policy_id: int,
+    current_user: CurrentUser,
+    db: DBSession,
+):
+    """Assign an escalation policy to an incident."""
+    incident = await get_incident_by_id(db, incident_id, current_user.team_id)
+    incident.escalation_policy_id = escalation_policy_id
+    return incident

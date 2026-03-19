@@ -1,6 +1,9 @@
+# this file is the single source of truth for every configuration required.
+
 from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# it tells where to find the path of the application, means from where we can start this.
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 

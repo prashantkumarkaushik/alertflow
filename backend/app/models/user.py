@@ -19,4 +19,4 @@ class User(Base, TimestampMixin):
     team_id: Mapped[int] = mapped_column(ForeignKey("teams.id"), nullable=False)
 
     # Relationships
-    team: Mapped["Team"] = relationship(back_populates="users")
+    team: Mapped["Team"] = relationship(back_populates="users")  # pyright: ignore [reportUndefinedVariable]  # noqa: F821

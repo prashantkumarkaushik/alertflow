@@ -1,15 +1,14 @@
-import os
 import asyncio
+import os
 from logging.config import fileConfig
 
-from alembic import context
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from app.core.config import settings
+from alembic import context
 from app.core.database import Base
 
 # Import all models so Alembic can detect them
-from app.models import Team, User, SLAPolicy  # noqa: F401
+from app.models import SLAPolicy, Team, User  # noqa: F401
 
 # Alembic Config object
 config = context.config

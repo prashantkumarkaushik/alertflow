@@ -14,4 +14,4 @@ class Team(Base, TimestampMixin):
     is_active: Mapped[bool] = mapped_column(default=True, nullable=False)
 
     # Relationships — one team has many users
-    users: Mapped[list["User"]] = relationship(back_populates="team")
+    users: Mapped[list["User"]] = relationship(back_populates="team")  # pyright: ignore [reportUndefinedVariable]  # noqa: F821

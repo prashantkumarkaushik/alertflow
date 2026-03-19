@@ -26,4 +26,6 @@ class UserResponse(BaseModel):
     is_superuser: bool
     team_id: int
 
+    # from_attributes tells pydantic that you're allowed to read data from object attributes, not just dictionaries
+    # Instead of data["email"], it can work with data.email
     model_config = {"from_attributes": True}

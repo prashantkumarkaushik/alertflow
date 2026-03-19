@@ -25,4 +25,4 @@ class MaintenanceWindow(Base, TimestampMixin):
     team_id: Mapped[int] = mapped_column(ForeignKey("teams.id"), nullable=False)
 
     # Relationships
-    team: Mapped["Team"] = relationship()  # noqa: F821
+    team: Mapped["Team"] = relationship()  # noqa: F821 # pyright: ignore[reportUndefinedVariable]

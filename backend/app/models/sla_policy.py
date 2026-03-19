@@ -24,4 +24,4 @@ class SLAPolicy(Base, TimestampMixin):
     team_id: Mapped[int] = mapped_column(ForeignKey("teams.id"), nullable=False)
 
     # Relationships
-    team: Mapped["Team"] = relationship()
+    team: Mapped["Team"] = relationship()  # pyright: ignore[reportUndefinedVariable]  # noqa: F821

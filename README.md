@@ -45,7 +45,7 @@ docker compose up -d --build
 
 | Service | URL | Description |
 |---|---|---|
-| Frontend | http://localhost:5173 | React dashboard |
+| Frontend | http://localhost:3000 | React dashboard |
 | Backend API | http://localhost:8000 | FastAPI |
 | API Docs | http://localhost:8000/docs | Swagger UI |
 | Prometheus | http://localhost:9090 | Metrics + alert rules |

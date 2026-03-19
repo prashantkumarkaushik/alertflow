@@ -1,3 +1,4 @@
+from app.services.notification_service import notify_escalation
 import logging
 from datetime import datetime, timezone, timedelta
 
@@ -74,6 +75,15 @@ async def run_escalations() -> None:
                         f"Escalating incident {incident.id} "
                         f"to {next_step.notify_target} "
                         f"(step {next_step.step_order})"
+                    )
+                    await notify_escalation(
+                        db=db,
+                        team_id=incident.team_id,
+                        incident_id=incident.id,
+                        title=incident.title,
+                        priority=incident.priority.value,
+                        step_order=next_step.step_order,
+                        notify_target=next_step.notify_target,
                     )
 
                     # In production: POST to webhook, send email etc.

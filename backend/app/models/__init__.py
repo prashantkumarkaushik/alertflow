@@ -7,9 +7,11 @@ from app.models.escalation_policy import EscalationPolicy, EscalationStep
 from app.models.alert import Alert
 from app.models.incident import Incident
 from app.models.audit_log import AuditLog
+from app.models.notification_config import NotificationConfig
 
 __all__ = [
     "Team",
+    "NotificationConfig",
     "User",
     "SLAPolicy",
     "IncidentStatus",

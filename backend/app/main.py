@@ -1,3 +1,4 @@
+from app.workers.sla_worker import check_sla_breaches, check_sla_warnings
 from prometheus_fastapi_instrumentator import Instrumentator
 from contextlib import asynccontextmanager
 
@@ -45,6 +46,13 @@ async def lifespan(app: FastAPI):
         trigger="interval",
         seconds=60,
         id="escalation_runner",
+        replace_existing=True,
+    )
+    scheduler.add_job(
+        check_sla_warnings,
+        trigger="interval",
+        seconds=60,
+        id="sla_warning",
         replace_existing=True,
     )
     scheduler.start()

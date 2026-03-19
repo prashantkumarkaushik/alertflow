@@ -1,3 +1,4 @@
+from app.services.notification_service import notify_new_incident
 import hashlib
 import json
 from datetime import datetime, timedelta, timezone
@@ -216,6 +217,16 @@ async def ingest_alert(
         },
     )
     db.add(audit)
+
+    if created:
+        await notify_new_incident(
+            db=db,
+            team_id=team_id,
+            incident_id=incident.id,
+            title=incident.title,
+            priority=payload.priority,
+            service_name=payload.service_name,
+        )
 
     return AlertIngestResponse(
         alert=AlertResponse.model_validate(alert),

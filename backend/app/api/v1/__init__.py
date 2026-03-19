@@ -10,6 +10,8 @@ from app.api.v1 import (
     webhooks,
 )
 
+import app.api.v1.notifications as notifications
+
 router = APIRouter(prefix="/api/v1")
 router.include_router(auth.router)
 router.include_router(alerts.router)
@@ -18,3 +20,4 @@ router.include_router(sla_policies.router)
 router.include_router(maintenance.router)
 router.include_router(escalation_policies.router)
 router.include_router(webhooks.router)
+router.include_router(notifications.router)

@@ -45,12 +45,11 @@ docker compose up -d --build
 
 | Service | URL | Description |
 |---|---|---|
-| Frontend | http://localhost:3000 | React dashboard |
+| Frontend | http://localhost:5173 | React dashboard |
 | Backend API | http://localhost:8000 | FastAPI |
 | API Docs | http://localhost:8000/docs | Swagger UI |
 | Prometheus | http://localhost:9090 | Metrics + alert rules |
 | Alertmanager | http://localhost:9093 | Alert routing |
-| Adminer | http://localhost:8080 | Database UI |
 
 ## First Time Setup
 

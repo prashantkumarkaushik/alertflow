@@ -1,5 +1,6 @@
 from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy import Enum as SAEnum
+from sqlalchemy.types import JSON
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -27,7 +28,12 @@ class Alert(Base, TimestampMixin):
 
     # Raw labels from the monitoring system stored as JSON
     # e.g. {"env": "prod", "region": "us-east-1", "severity": "critical"}
-    labels: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    # labels: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    labels: Mapped[dict] = mapped_column(
+        JSONB().with_variant(JSON(), "sqlite"),
+        nullable=False,
+        default=dict,
+    )
 
     # Human readable description of the alert
     message: Mapped[str | None] = mapped_column(Text, nullable=True)

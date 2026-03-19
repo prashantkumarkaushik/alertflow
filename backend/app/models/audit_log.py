@@ -1,6 +1,7 @@
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import JSON
 
 from app.core.database import Base
 from app.models.base import TimestampMixin
@@ -19,7 +20,11 @@ class AuditLog(Base, TimestampMixin):
 
     # Any extra data about the action stored as JSON
     # e.g. {"from_status": "triggered", "to_status": "acknowledged"}
-    payload: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    payload: Mapped[dict] = mapped_column(
+        JSONB().with_variant(JSON(), "sqlite"),
+        nullable=False,
+        default=dict,
+    )
 
     # Foreign key — every log entry belongs to an incident
     incident_id: Mapped[int] = mapped_column(

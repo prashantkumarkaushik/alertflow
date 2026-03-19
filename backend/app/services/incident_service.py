@@ -106,7 +106,7 @@ async def transition_status(
     allowed = VALID_TRANSITIONS.get(incident.status, [])
     if payload.status not in allowed:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail=(
                 f"Cannot transition from {incident.status.value} "
                 f"to {payload.status.value}. "

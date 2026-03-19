@@ -43,9 +43,44 @@ cp .env.example .env
 docker compose up -d --build
 ```
 
-Backend: http://localhost:8000/docs
-API docs: http://localhost:8000/docs (Swagger UI)
+| Service | URL | Description |
+|---|---|---|
+| Frontend | http://localhost:3000 | React dashboard |
+| Backend API | http://localhost:8000 | FastAPI |
+| API Docs | http://localhost:8000/docs | Swagger UI |
+| Prometheus | http://localhost:9090 | Metrics + alert rules |
+| Alertmanager | http://localhost:9093 | Alert routing |
+| Adminer | http://localhost:8080 | Database UI |
 
+## First Time Setup
+
+After starting the stack:
+
+1. Open http://localhost:3000/register
+2. Create your account and team
+3. Go to http://localhost:8000/docs → Authorize → create an SLA policy
+4. Alerts from Prometheus will automatically create incidents
+
+## Development
+
+Run frontend in dev mode with hot reload:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Run backend with hot reload (already configured in Docker):
+```bash
+docker compose up backend -d
+docker compose logs backend -f
+```
+
+Run tests:
+```bash
+cd backend
+uv run pytest -v
+```
 ---
 
 ## Project Structure

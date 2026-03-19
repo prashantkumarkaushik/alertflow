@@ -12,4 +12,12 @@ __pycache__/
 *.log
 
 # Editor
+#
+#
 .nvim/
+
+node_modules
+dist
+.env
+*.log
+.DS_Store

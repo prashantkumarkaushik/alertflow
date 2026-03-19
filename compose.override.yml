@@ -26,6 +26,15 @@ services:
       environment:
         - ENVIRONMENT=local
         - PYTHONPATH=/app
+
+  frontend:
+      restart: "no"
+      ports:
+        - "3000:80"
+      build:
+        context: ./frontend
+        dockerfile: Dockerfile
+
   prometheus:
     image: prom/prometheus:latest
     restart: "no"

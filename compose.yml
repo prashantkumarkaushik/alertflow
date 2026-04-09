@@ -81,6 +81,21 @@ services:
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
 
+  chaos-simulator:
+    build:
+      context: ./chaos-simulator
+      dockerfile: Dockerfile
+    container_name: chaos-simulator
+    restart: always
+    ports:
+      - "8001:8001"
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
 volumes:
   app-db-data:
   app-redis-data:

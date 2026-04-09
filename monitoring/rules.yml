@@ -1,43 +1,86 @@
 groups:
-  - name: alertflow_demo
+  - name: chaos_simulator_alerts
     rules:
-      # Fires when backend is unreachable for 30s
-      - alert: BackendDown
-        expr: up{job="alertflow-backend"} == 0
+
+      # ── P1 Alerts ─────────────────────────────────────────────────────────
+
+      - alert: ServiceDown
+        expr: chaos_service_health == 0
         for: 30s
         labels:
           severity: critical
-          service: alertflow-backend
+          priority: P1
+          team: platform
         annotations:
-          summary: "AlertFlow backend is down"
-          description: "Backend has been unreachable for 30 seconds"
+          summary: "Service {{ $labels.service }} is DOWN"
+          description: "Service {{ $labels.service }} in {{ $labels.environment }} has been unreachable for 30s. Health check returning 0."
 
-      # Fires when backend is slow to respond
-      - alert: HighResponseTime
-        expr: up{job="alertflow-backend"} == 1
-        for: 10s
+      - alert: HighMemoryUsage
+        expr: chaos_memory_usage_percent > 85
+        for: 2m
+        labels:
+          severity: critical
+          priority: P1
+          team: platform
+        annotations:
+          summary: "High memory usage on {{ $labels.service }}"
+          description: "Memory usage on {{ $labels.service }} is {{ $value | printf \"%.1f\" }}% — above 85% threshold for 2 minutes. Risk of OOM kill."
+
+      # ── P2 Alerts ─────────────────────────────────────────────────────────
+
+      - alert: HighErrorRate
+        expr: chaos_http_error_rate > 0.40
+        for: 1m
         labels:
           severity: warning
-          service: alertflow-backend
+          priority: P2
+          team: backend
         annotations:
-          summary: "Demo alert — High response time on backend"
-          description: "This is a demo alert to show Prometheus integration"
+          summary: "High HTTP error rate on {{ $labels.service }}"
+          description: "{{ $labels.service }} error rate is {{ $value | printf \"%.1%\" }} — above 40% threshold for 1 minute."
+
+      - alert: HighResponseLatency
+        expr: chaos_response_latency_ms > 3000
+        for: 2m
+        labels:
+          severity: warning
+          priority: P2
+          team: backend
+        annotations:
+          summary: "High response latency on {{ $labels.service }}"
+          description: "{{ $labels.service }} p95 latency is {{ $value | printf \"%.0f\" }}ms — above 3000ms threshold for 2 minutes."
 
       - alert: HighCPUUsage
-        expr: up{job="alertflow-backend"} == 1
-        for: 10s
+        expr: chaos_cpu_usage_percent > 90
+        for: 2m
         labels:
-          severity: critical
-          service: payments-api
+          severity: warning
+          priority: P2
+          team: platform
         annotations:
-          summary: "High CPU usage on payments-api"
-          description: "CPU has been above threshold for 10 seconds"
+          summary: "High CPU usage on {{ $labels.service }}"
+          description: "CPU usage on {{ $labels.service }} is {{ $value | printf \"%.1f\" }}% — above 90% threshold for 2 minutes."
 
-      - alert: BackendDown
-        expr: up{job="alertflow-backend"} == 0
-        for: 10s
+      # ── P3 Alerts ─────────────────────────────────────────────────────────
+
+      - alert: ElevatedErrorRate
+        expr: chaos_http_error_rate > 0.05 and chaos_http_error_rate <= 0.40
+        for: 3m
         labels:
-          severity: critical
-          service: alertflow-backend
+          severity: info
+          priority: P3
+          team: backend
         annotations:
-          summary: "AlertFlow backend is down"
+          summary: "Elevated error rate on {{ $labels.service }}"
+          description: "{{ $labels.service }} error rate is {{ $value | printf \"%.1%\" }} — slightly elevated for 3 minutes. Monitoring."
+
+      - alert: HighTrafficVolume
+        expr: chaos_request_rate > 1500
+        for: 2m
+        labels:
+          severity: info
+          priority: P3
+          team: backend
+        annotations:
+          summary: "Traffic spike on {{ $labels.service }}"
+          description: "{{ $labels.service }} receiving {{ $value | printf \"%.0f\" }} req/s — 5x normal volume. Monitor for degradation."

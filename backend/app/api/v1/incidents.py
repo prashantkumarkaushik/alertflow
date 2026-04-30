@@ -96,6 +96,9 @@ async def get_incident_audit(
     )
 
 
+# TODO: Need to add the summarize endpoint here
+
+
 @router.patch("/{incident_id}/assign-escalation", response_model=IncidentDetailResponse)
 async def assign_escalation_policy(
     incident_id: int,
